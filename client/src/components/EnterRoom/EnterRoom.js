@@ -43,7 +43,8 @@ const EnterRoom = () => {
             <Flex
                 minHeight={'inherit'}
                 justifyContent={'center'}
-                alignItems={'center'}>
+                alignItems={'center'}
+                px={'20px'}>
                 <Flex
                     width={'xl'}
                     flexDirection={'column'}
@@ -52,8 +53,8 @@ const EnterRoom = () => {
                         alignSelf={'center'}
                         fontFamily={'Lexend'}
                         fontWeight={500}
-                        fontSize={'45px'}
-                        lineHeight={'81px'}>
+                        fontSize={{ base: '25px', md: '45px' }}
+                        lineHeight={{ base: '52px', md: '81px' }}>
                         Create/Join a room
                     </Text>
                     <EnterRoomInput validateRoomCode={validateRoomCode} handleSubmit={handleSubmit} setLocalRoomCode={setLocalRoomCode} />
