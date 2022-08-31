@@ -36,6 +36,10 @@ const colors = {
     },
     bgSecondary: {
         400: "#F7F8FA"
+    },
+    errorRed: {
+        // 400: "#FF1053"
+        400: "#E15554"
     }
 }
 

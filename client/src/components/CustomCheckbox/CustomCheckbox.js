@@ -7,8 +7,7 @@ import {
 import { BsCheck } from 'react-icons/bs'
 
 const CustomCheckbox = (props) => {
-    const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } =
-        useCheckbox(props)
+    const { state, getCheckboxProps, getInputProps, getLabelProps, htmlProps } = useCheckbox(props)
 
     return (
         <chakra.label

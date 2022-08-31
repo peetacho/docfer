@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Text,
@@ -10,20 +10,25 @@ import CustomCheckbox from "../CustomCheckbox/CustomCheckbox";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import EnterRoomInput from "./EnterRoomInput/EnterRoomInput";
 
-const handleSubmit = (code) => {
-    console.log("enter pressed!", code)
-    window.location = '/room/' + code
-}
 
 const EnterRoom = () => {
 
     const [localRoomCode, setLocalRoomCode] = useLocalStorage('room-code')
-    const [inputRoomCode, setInputRoomCode] = useState('');
+    const [checkBoxValue, setCheckBoxValue] = useState(false);
 
-    if (localRoomCode !== null) {
-        // move to room code in local storage
-        handleSubmit(localRoomCode)
+    const handleSubmit = (code) => {
+        if (checkBoxValue) {
+            setLocalRoomCode(code)
+        }
+        window.location = '/room/' + code
     }
+
+    useEffect(() => {
+        if (localRoomCode !== null) {
+            // move to room code in local storage
+            window.location = '/room/' + localRoomCode
+        }
+    }, [localRoomCode]);
 
     return (
         <>
@@ -51,10 +56,10 @@ const EnterRoom = () => {
                         lineHeight={'81px'}>
                         Create/Join a room
                     </Text>
-                    <EnterRoomInput validateRoomCode={validateRoomCode} handleSubmit={handleSubmit} setInputRoomCode={setInputRoomCode} />
+                    <EnterRoomInput validateRoomCode={validateRoomCode} handleSubmit={handleSubmit} setLocalRoomCode={setLocalRoomCode} />
                     <CustomCheckbox
                         text={'Remember this room'}
-                        onChange={e => console.log("checkbox clicked! ", e.target.checked)} />
+                        onChange={e => setCheckBoxValue(e.target.checked)} />
                 </Flex>
             </Flex>
         </>
