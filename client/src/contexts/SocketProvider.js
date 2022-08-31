@@ -8,15 +8,14 @@ export function useSocket() {
 }
 
 export function SocketProvider({ children }) {
-    const [socket, setSocket] = useState("")
+    const [socket, setSocket] = useState(null)
 
     useEffect(() => {
-        if (socket === "") {
-            const newSocket = io(
-                'http://localhost:8080'
-            )
-            setSocket(newSocket)
-        }
+        const newSocket = io(
+            'http://localhost:8080'
+        )
+        setSocket(newSocket)
+        return () => newSocket.close()
     }, [])
 
     return (
