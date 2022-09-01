@@ -42,13 +42,9 @@ const Room = () => {
     const { roomID } = useParams();
     const socket = useSocket();
 
-    const addMessage = useCallback((msg, sender, fileData) => {
+    const addMessage = useCallback(({ msg, sender, fileData }) => {
         setMessages([...messages, { msg: msg, sender: sender, fileData: fileData }])
     }, [messages])
-
-    const receiveMessage = useCallback(({ msg, sender, fileData }) => {
-        addMessage(msg, sender, fileData)
-    }, [addMessage])
 
     useEffect(() => {
         if (socket === null) return
@@ -57,8 +53,8 @@ const Room = () => {
 
     useEffect(() => {
         if (socket === null) return
-        socket.on("receive-message", receiveMessage)
-    }, [socket, receiveMessage]);
+        socket.on("receive-message", addMessage)
+    }, [socket, addMessage]);
 
     return (
         <>
@@ -68,7 +64,7 @@ const Room = () => {
             />
             <Button onClick={e => {
                 socket.emit("send-message", { msg: inputRef.current.value, room: roomID, fileData: null })
-                addMessage(inputRef.current.value, "You")
+                addMessage(inputRef.current.value, "You", null)
             }}>
                 Send msg
             </Button>
