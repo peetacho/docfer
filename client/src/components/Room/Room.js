@@ -5,15 +5,25 @@ import {
 import { useSocket } from "../../contexts/SocketProvider";
 import { useParams } from "react-router-dom";
 
-const downloadArrayBufferAsFile = (arrayBuffer, mimType, fileName) => {
-    let binary = '';
-    const bytes = new Uint8Array(arrayBuffer);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
+const downloadArrayBufferAsFile = (obj, mimType, fileName) => {
+    let url = '';
+    // conver the object into a url depending on whether obj is of type ArrayBuffer or File
+    if (Object.prototype.toString.call(obj) === '[object ArrayBuffer]') {
+        let binary = '';
+        const bytes = new Uint8Array(obj);
+        const len = bytes.byteLength;
+        for (let i = 0; i < len; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        const file = window.btoa(binary);
+        url = `data:${mimType};base64,` + file;
     }
-    const file = window.btoa(binary);
-    const url = `data:${mimType};base64,` + file;
+    else if (Object.prototype.toString.call(obj) === '[object File]') {
+        url = URL.createObjectURL(obj)
+    }
+    else {
+        return;
+    }
 
     // download the file
     const a = document.createElement('a');
@@ -28,18 +38,16 @@ const downloadArrayBufferAsFile = (arrayBuffer, mimType, fileName) => {
 const Room = () => {
     const [messages, setMessages] = useState([])
     const [fileData, setFileData] = useState(null)
-    const [receivedFileData, setReceivedFileData] = useState(null)
     const inputRef = useRef(null);
     const { roomID } = useParams();
     const socket = useSocket();
 
-    const addMessage = useCallback((msg, sender) => {
-        setMessages([...messages, { msg: msg, sender: sender }])
+    const addMessage = useCallback((msg, sender, fileData) => {
+        setMessages([...messages, { msg: msg, sender: sender, fileData: fileData }])
     }, [messages])
 
     const receiveMessage = useCallback(({ msg, sender, fileData }) => {
-        addMessage(msg, sender)
-        setReceivedFileData(fileData)
+        addMessage(msg, sender, fileData)
     }, [addMessage])
 
     useEffect(() => {
@@ -59,7 +67,7 @@ const Room = () => {
                 ref={inputRef}
             />
             <Button onClick={e => {
-                socket.emit("send-message", { msg: inputRef.current.value, room: roomID, fileData: fileData })
+                socket.emit("send-message", { msg: inputRef.current.value, room: roomID, fileData: null })
                 addMessage(inputRef.current.value, "You")
             }}>
                 Send msg
@@ -69,26 +77,36 @@ const Room = () => {
                 if (targetFile) {
                     setFileData({ file: targetFile, fileType: targetFile.type, fileName: targetFile.name });
                 }
-                // console.log(e.target.files[0])
             }} />
-            {
-                receivedFileData ? (
-                    // <Image src={URL.createObjectURL(new Blob([fileArrayBuffer]))} />
-                    <Button onClick={() => downloadArrayBufferAsFile(receivedFileData.file, receivedFileData.fileType, receivedFileData.fileName)}></Button>
-                ) : null
-            }
+            <Button onClick={e => {
+                socket.emit("send-message", { msg: "", room: roomID, fileData: fileData })
+                addMessage("", "You", fileData)
+            }}>
+                Upload file
+            </Button>
             <Stack>
                 {messages && messages.map((message, i) => {
                     return (
                         <div key={i}>
-                            <Box>
-                                <Text>{message.msg} - {message.sender}</Text>
-                            </Box>
+                            {
+                                message.fileData ? (
+                                    <Box>
+                                        <Text>{message.fileData.fileName} - {message.sender}</Text>
+                                        <Button
+                                            onClick={() => downloadArrayBufferAsFile(message.fileData.file, message.fileData.fileType, message.fileData.fileName)}>
+                                            Download this file
+                                        </Button>
+                                    </Box>
+                                ) : (
+                                    <Box>
+                                        <Text>{message.msg} - {message.sender}</Text>
+                                    </Box>
+                                )
+                            }
                         </div>
                     )
                 })}
             </Stack>
-
         </>
     )
 }
