@@ -4,6 +4,7 @@ import {
 } from '@chakra-ui/react'
 import { useSocket } from "../../contexts/SocketProvider";
 import { useParams } from "react-router-dom";
+import RoomNavBar from "./RoomNavBar/RoomNavBar";
 
 const downloadArrayBufferAsFile = (obj, mimType, fileName) => {
     let url = '';
@@ -57,7 +58,7 @@ const Room = () => {
     }, [socket, addMessage]);
 
     return (
-        <>
+        <RoomNavBar roomID={roomID}>
             <Input
                 placeholder="send message here"
                 ref={inputRef}
@@ -103,7 +104,7 @@ const Room = () => {
                     )
                 })}
             </Stack>
-        </>
+        </RoomNavBar>
     )
 }
 
