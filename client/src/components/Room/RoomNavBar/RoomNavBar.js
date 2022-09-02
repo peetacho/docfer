@@ -19,6 +19,7 @@ import { BsGithub } from 'react-icons/bs'
 import { IoCloseOutline } from 'react-icons/io5'
 import BlueIconTextButton from '../../CustomButtons/BlueIconTextButton/BlueIconTextButton';
 import GhostButton from '../../CustomButtons/GhostButton/GhostButton';
+import useLocalStorage from '../../../hooks/useLocalStorage';
 
 const LinkItems = [
     { name: 'Github Repo', icon: BsGithub, link: 'https://github.com/peetacho/docfer' },
@@ -54,6 +55,7 @@ export default function RoomNavBar({ children, roomID }) {
 }
 
 const SidebarContent = ({ onClose, roomID, ...rest }) => {
+    const [localRoomCode, setLocalRoomCode] = useLocalStorage('room-code')
     return (
         <Box
             pos="fixed"
@@ -94,7 +96,10 @@ const SidebarContent = ({ onClose, roomID, ...rest }) => {
                 px={{ base: 4, md: '24px' }}
                 py={'40px'}
                 w={{ base: 'full', md: '375px' }}>
-                <BlueIconTextButton text={'Leave Room'} icon={FiLogOut} onClick={() => console.log("hi")} />
+                <BlueIconTextButton text={'Leave Room'} icon={FiLogOut} onClick={() => {
+                    setLocalRoomCode(null)
+                    window.location = '/enter-room'
+                }} />
             </Box>
         </Box>
     );
@@ -140,9 +145,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
             px={{ base: 4, md: 24 }}
             height="20"
             alignItems="center"
-            bg={useColorModeValue('white', 'gray.900')}
+            bg={'white'}
             borderBottomWidth="1px"
-            borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
+            borderBottomColor={'gray.200'}
             justifyContent="space-between"
             {...rest}>
             <Text fontSize={'20px'} fontFamily={'Lexend'} fontWeight={500}>Doc<Text as={'span'} color='brand.400' fontFamily={'inherit'}>Fer</Text></Text>
