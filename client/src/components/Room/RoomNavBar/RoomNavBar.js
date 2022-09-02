@@ -12,8 +12,8 @@ import {
 } from '@chakra-ui/react';
 import {
     FiMenu,
-    FiHelpCircle,
-    FiLogOut
+    FiLogOut,
+    FiHome
 } from 'react-icons/fi';
 import { BsGithub } from 'react-icons/bs'
 import { IoCloseOutline } from 'react-icons/io5'
@@ -22,8 +22,8 @@ import GhostButton from '../../CustomButtons/GhostButton/GhostButton';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 
 const LinkItems = [
-    { name: 'Github Repo', icon: BsGithub, link: 'https://github.com/peetacho/docfer' },
-    { name: 'Help', icon: FiHelpCircle, link: '' }
+    { name: 'Home', icon: FiHome, link: '/' },
+    { name: 'Github Repo', icon: BsGithub, link: 'https://github.com/peetacho/docfer' }
 ];
 
 export default function RoomNavBar({ children, roomID }) {
