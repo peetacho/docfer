@@ -17,5 +17,11 @@ export const validateRoomCode = (s) => {
     else if (s.includes(" ")) {
         error = 'Room code cannot contain spaces'
     }
+    else if (s.length > 21) {
+        error = 'Room code is too long'
+    }
+    else if (s.length < 5) {
+        error = 'Room code is too short'
+    }
     return error
 };
