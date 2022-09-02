@@ -8,7 +8,7 @@ import RoomNavBar from "./RoomNavBar/RoomNavBar";
 
 const downloadArrayBufferAsFile = (obj, mimType, fileName) => {
     let url = '';
-    // conver the object into a url depending on whether obj is of type ArrayBuffer or File
+    // convert the object into a url depending on whether obj is of type ArrayBuffer or File
     if (Object.prototype.toString.call(obj) === '[object ArrayBuffer]') {
         let binary = '';
         const bytes = new Uint8Array(obj);
@@ -43,9 +43,13 @@ const Room = () => {
     const { roomID } = useParams();
     const socket = useSocket();
 
-    const addMessage = useCallback(({ msg, sender, fileData }) => {
+    const addMessage = useCallback((msg, sender, fileData) => {
         setMessages([...messages, { msg: msg, sender: sender, fileData: fileData }])
     }, [messages])
+
+    const receiveMessage = useCallback(({ msg, sender, fileData }) => {
+        addMessage(msg, sender, fileData)
+    }, [addMessage])
 
     useEffect(() => {
         if (socket === null) return
@@ -54,8 +58,8 @@ const Room = () => {
 
     useEffect(() => {
         if (socket === null) return
-        socket.on("receive-message", addMessage)
-    }, [socket, addMessage]);
+        socket.on("receive-message", receiveMessage)
+    }, [socket, receiveMessage]);
 
     return (
         <RoomNavBar roomID={roomID}>
