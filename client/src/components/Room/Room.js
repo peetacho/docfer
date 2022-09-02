@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-    Button, Input
+    Button, Flex, Input
 } from '@chakra-ui/react'
 import { useSocket } from "../../contexts/SocketProvider";
 import { useParams } from "react-router-dom";
@@ -12,6 +12,7 @@ const Room = () => {
     const [messages, setMessages] = useState([])
     const [fileData, setFileData] = useState(null)
     const inputRef = useRef(null);
+    const hiddenFileInputRef = useRef(null);
     const { roomID } = useParams();
     const socket = useSocket();
 
@@ -44,26 +45,44 @@ const Room = () => {
     }
 
     const handleUploadFile = () => {
-        socket.emit("send-message", { msg: "", room: roomID, fileData: fileData })
-        addMessage("", "You", fileData)
+        hiddenFileInputRef.current.click()
     }
 
     const handleSendMessage = (e) => {
-        socket.emit("send-message", { msg: inputRef.current.value, room: roomID, fileData: null })
-        addMessage(inputRef.current.value, "You", null)
+        if (fileData) {
+            socket.emit("send-message", { msg: "", room: roomID, fileData: fileData })
+            addMessage("", "You", fileData)
+            setFileData(null)
+        } else {
+            socket.emit("send-message", { msg: inputRef.current.value, room: roomID, fileData: null })
+            addMessage(inputRef.current.value, "You", null)
+        }
+    }
+
+    const handleOnKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSendMessage()
+            inputRef.current.value = ''
+        }
     }
 
     return (
         <RoomNavBar roomID={roomID}>
-            <Input
-                placeholder="send message here"
-                ref={inputRef}
-            />
-            <Button onClick={handleSendMessage}>Send msg</Button>
-            <Input type="file" onChange={handleOnChangeFile} />
-            <Button onClick={handleUploadFile}>Upload file</Button>
-            <Button onClick={() => console.log(messages)}>print state bruh</Button>
             <Messages messages={messages} />
+            <Flex
+                pos={'fixed'}
+                bottom={0}
+                mb={'40px'}
+                mr={'50px'}
+                width={'-webkit-fill-available'}
+                gap={'10px'}
+                flexDirection={'row'}
+                height={'68px'} >
+                <Input placeholder="type a message..." onKeyDown={handleOnKeyDown} ref={inputRef} />
+                <Input type="file" onChange={handleOnChangeFile} display={'none'} ref={hiddenFileInputRef} />
+                <Button onClick={handleUploadFile}>Upload file</Button>
+                <Button onClick={handleSendMessage}>Send msg</Button>
+            </Flex>
         </RoomNavBar>
     )
 }

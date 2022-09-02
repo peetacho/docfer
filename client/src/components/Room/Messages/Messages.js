@@ -1,4 +1,5 @@
-import { Box, Button, Stack, Text } from "@chakra-ui/react"
+import { Box, Flex, Text } from "@chakra-ui/react"
+import { FiPaperclip } from "react-icons/fi";
 import { MESSAGE_TYPES } from "../../../constants/constants";
 
 
@@ -36,7 +37,7 @@ const Messages = ({
     messages
 }) => {
     return (
-        <Stack gap={'5px'} flexDirection={'column'}>
+        <Flex flexDirection={'column'}>
             {messages && messages.map((message, i) => {
                 return (
                     <Box key={i} alignSelf={message.sender === 'You' ? 'end' : 'start'} fontFamily={'Inter'}>
@@ -45,23 +46,31 @@ const Messages = ({
                                 <Text color={'primary.400'} fontWeight={400} fontSize={'17px'} lineHeight={'30px'}>{message.sender === 'You' ? 'You' : "User " + message.sender.substring(0, 5)}</Text>
                             ) : message.fileData ? (
                                 // message is a file
-                                <Box>
-                                    <Button
-                                        onClick={() => downloadArrayBufferAsFile(message.fileData.file, message.fileData.fileType, message.fileData.fileName)}>
-                                        Download {message.fileData.fileName}
-                                    </Button>
-                                </Box>
+                                <Flex
+                                    cursor={'pointer'}
+                                    mb={'12px'}
+                                    px={'14px'}
+                                    borderRadius={'10px'}
+                                    height={'60px'}
+                                    alignItems={'center'}
+                                    bg={'sub.400'}
+                                    color={'secondary.400'}
+                                    gap={'7px'}
+                                    onClick={() => downloadArrayBufferAsFile(message.fileData.file, message.fileData.fileType, message.fileData.fileName)}>
+                                    <FiPaperclip />
+                                    <Text fontWeight={300} fontSize={'20px'} lineHeight={'24px'}>{message.fileData.fileName}</Text>
+                                </Flex>
                             ) : (
                                 // message is a text message
-                                <Box borderRadius={'10px'} height={'60px'} bg={'white'}>
-                                    <Text px={'14'} py={'18.5'} color={'secondary.400'} fontWeight={300} fontSize={'20px'} lineHeight={'24px'}>{message.msg}</Text>
-                                </Box>
+                                <Flex mb={'12px'} borderRadius={'10px'} height={'60px'} alignItems={'center'} bg={message.sender === 'You' ? 'brand.400' : 'white'}>
+                                    <Text px={'14px'} color={message.sender === 'You' ? 'white' : 'secondary.400'} fontWeight={300} fontSize={'20px'} lineHeight={'24px'}>{message.msg}</Text>
+                                </Flex>
                             )
                         }
                     </Box>
                 )
             })}
-        </Stack>
+        </Flex>
     )
 }
 

@@ -47,7 +47,7 @@ export default function RoomNavBar({ children, roomID }) {
                 </DrawerContent>
             </Drawer>
             <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
-            <Box ml={{ base: 0, md: '375px' }} p="4">
+            <Box ml={{ base: 0, md: '375px' }} px="50px">
                 {children}
             </Box>
         </Box>
