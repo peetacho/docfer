@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-    Button, Flex, Input
+    Flex, IconButton, Input
 } from '@chakra-ui/react'
 import { useSocket } from "../../contexts/SocketProvider";
 import { useParams } from "react-router-dom";
 import RoomNavBar from "./RoomNavBar/RoomNavBar";
 import Messages from "./Messages/Messages";
 import { MESSAGE_TYPES } from "../../constants/constants";
+import { FiPaperclip, FiSend } from "react-icons/fi";
 
 const Room = () => {
     const [messages, setMessages] = useState([])
@@ -68,20 +69,22 @@ const Room = () => {
 
     return (
         <RoomNavBar roomID={roomID}>
-            <Messages messages={messages} />
-            <Flex
-                pos={'fixed'}
-                bottom={0}
-                mb={'40px'}
-                mr={'50px'}
-                width={'-webkit-fill-available'}
-                gap={'10px'}
-                flexDirection={'row'}
-                height={'68px'} >
-                <Input placeholder="type a message..." onKeyDown={handleOnKeyDown} ref={inputRef} />
-                <Input type="file" onChange={handleOnChangeFile} display={'none'} ref={hiddenFileInputRef} />
-                <Button onClick={handleUploadFile}>Upload file</Button>
-                <Button onClick={handleSendMessage}>Send msg</Button>
+            <Flex flexDirection={'column'} flexGrow={1}>
+                <Messages messages={messages} />
+                <Flex
+                    gap={'25px'}
+                    mt={'5px'}
+                    mb={'40px'}
+                    flexDirection={'row'}
+                    height={'68px'}
+                    color={'white'}>
+                    <Input placeholder="type a message..." height={'inherit'} fontFamily={'Inter'} fontWeight={300} fontSize={'20px'} bg={'white'} borderRadius={'15px'} color={'secondary.400'} onKeyDown={handleOnKeyDown} ref={inputRef} />
+                    <Input type="file" onChange={handleOnChangeFile} display={'none'} ref={hiddenFileInputRef} />
+                    <Flex gap={'inherit'}>
+                        <IconButton bg={'secondary.400'} height={'68px'} width={'68px'} isRound icon={<FiPaperclip size={'1.5rem'} />} onClick={handleUploadFile} />
+                        <IconButton bg={'brand.400'} height={'68px'} width={'68px'} isRound icon={<FiSend size={'1.5rem'} />} onClick={handleSendMessage} />
+                    </Flex>
+                </Flex>
             </Flex>
         </RoomNavBar>
     )
