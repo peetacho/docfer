@@ -10,6 +10,7 @@ const BlueIconTextButton = ({
             as='button'
             w={'full'}
             borderRadius={'15px'}
+            _hover={{ opacity: 0.9 }}
             bg={'brand.400'}
             color={'white'}
             height={'68px'}

@@ -71,10 +71,8 @@ const SidebarContent = ({ onClose, roomID, ...rest }) => {
                 color={'primary.400'}>
                 <Flex mt={{ base: '12px', md: '35px' }} mb={{ base: 0, md: '30px' }} alignItems="center" px={{ base: 4, md: '24px' }} justifyContent="space-between">
                     <Box>
-                        <Text fontSize={{ base: '28px', md: '48px' }} fontFamily={'Lexend'} fontWeight={500}>Doc<Text as={'span'} color='brand.400' fontFamily={'inherit'}>Fer</Text></Text>
-                        <Text fontSize={'12px'} fontFamily={'Inter'} fontWeight={400}>
-                            Room Code: {roomID}
-                        </Text>
+                        <Text fontSize={{ base: '28px', md: '48px' }} fontFamily={'Lexend'} lineHeight={'52px'} fontWeight={500}>Doc<Text as={'span'} color='brand.400' fontFamily={'inherit'}>Fer</Text></Text>
+                        <Text fontSize={'12px'} fontFamily={'Inter'} fontWeight={400}>&nbsp;Room Code: {roomID}</Text>
                     </Box>
                     <GhostButton
                         display={{ base: 'flex', md: 'none' }}
@@ -111,7 +109,7 @@ const NavItem = ({ icon, children, link, ...rest }) => {
             py={'20px'}
             mx={{ base: 4, md: '24px' }}
             color={'secondary.400'}>
-            <Link href={link} target="_blank" textDecoration={'none !important'} _focus={{ boxShadow: 'none' }}>
+            <Link href={link} target="_blank" textDecoration={'none !important'} _hover={{ opacity: 0.8 }} _focus={{ boxShadow: 'none' }}>
                 <Flex
                     align="center"
                     role="group"

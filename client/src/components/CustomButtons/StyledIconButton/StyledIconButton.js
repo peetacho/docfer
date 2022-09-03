@@ -13,7 +13,7 @@ const StyledIconButton = ({
             width={hw}
             isRound
             icon={icon}
-            _hover={{ bg: bg }}
+            _hover={{ bg: bg, opacity: 0.8 }}
             _active={{ bg: bg }}
             {...otherProps}
         />

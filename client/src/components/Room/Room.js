@@ -92,7 +92,7 @@ const Room = () => {
                                             pos="absolute"
                                             top="-1px"
                                             right="-1px"
-                                            p="8px"
+                                            p={{ base: '4px', md: '8px' }}
                                             fontSize="xs"
                                             fontWeight="bold"
                                             lineHeight="none"

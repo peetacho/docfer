@@ -66,6 +66,7 @@ const Messages = ({
                                         bg={'sub.400'}
                                         color={'secondary.400'}
                                         text={message.fileData.fileName}
+                                        _hover={{ opacity: 0.7 }}
                                         onClick={() => downloadArrayBufferAsFile(message.fileData.file, message.fileData.fileType, message.fileData.fileName)}>
                                         <FiPaperclip />
                                     </MessageComponent>

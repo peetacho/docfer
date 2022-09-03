@@ -8,7 +8,7 @@ const MessageComponent = ({
 }) => {
     return (
         <Flex
-            mb={'12px'}
+            mb={{ base: '10px', md: '12px' }}
             px={{ base: '12px', md: '14px' }}
             py={{ base: '9.5px', md: '18.5px' }}
             borderRadius={'15px'}
