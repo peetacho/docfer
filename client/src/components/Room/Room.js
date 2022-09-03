@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-    Flex, IconButton, Input
+    Flex, Input, chakra, Icon
 } from '@chakra-ui/react'
 import { useSocket } from "../../contexts/SocketProvider";
 import { useParams } from "react-router-dom";
@@ -8,6 +8,7 @@ import RoomNavBar from "./RoomNavBar/RoomNavBar";
 import Messages from "./Messages/Messages";
 import { MESSAGE_TYPES } from "../../constants/constants";
 import { FiPaperclip, FiSend } from "react-icons/fi";
+import StyledIconButton from "../CustomButtons/StyledIconButton/StyledIconButton";
 
 const Room = () => {
     const [messages, setMessages] = useState([])
@@ -72,17 +73,39 @@ const Room = () => {
             <Flex flexDirection={'column'} flexGrow={1}>
                 <Messages messages={messages} />
                 <Flex
-                    gap={'25px'}
-                    mt={'5px'}
-                    mb={'40px'}
+                    px={{ base: '20px', md: '24px' }}
+                    gap={{ base: '12px', md: '25px' }}
+                    mt={'10px'}
+                    mb={{ base: '30px', md: '40px' }}
                     flexDirection={'row'}
-                    height={'68px'}
+                    height={{ base: '42px', md: '68px' }}
                     color={'white'}>
-                    <Input placeholder="type a message..." height={'inherit'} fontFamily={'Inter'} fontWeight={300} fontSize={'20px'} bg={'white'} borderRadius={'15px'} color={'secondary.400'} onKeyDown={handleOnKeyDown} ref={inputRef} />
+                    <Input placeholder="type a message..." height={'inherit'} fontFamily={'Inter'} fontWeight={300} fontSize={{ base: '14px', md: '20px' }} bg={'white'} borderRadius={{ base: '10px', md: '15px' }} color={'secondary.400'} onKeyDown={handleOnKeyDown} ref={inputRef} />
                     <Input type="file" onChange={handleOnChangeFile} display={'none'} ref={hiddenFileInputRef} />
                     <Flex gap={'inherit'}>
-                        <IconButton bg={'secondary.400'} height={'68px'} width={'68px'} isRound icon={<FiPaperclip size={'1.5rem'} />} onClick={handleUploadFile} />
-                        <IconButton bg={'brand.400'} height={'68px'} width={'68px'} isRound icon={<FiSend size={'1.5rem'} />} onClick={handleSendMessage} />
+                        <StyledIconButton bg={'secondary.400'} hw={{ base: '42px', md: '68px' }} icon={
+                            <>
+                                <Icon as={FiPaperclip} boxSize={{ base: '16px', md: '26px' }} />
+                                {
+                                    fileData ? (
+                                        <chakra.span
+                                            pos="absolute"
+                                            top="-1px"
+                                            right="-1px"
+                                            p="8px"
+                                            fontSize="xs"
+                                            fontWeight="bold"
+                                            lineHeight="none"
+                                            color="red.100"
+                                            transform="translate(50%,-50%)"
+                                            bg="red.600"
+                                            rounded="full"
+                                        />
+                                    ) : null
+                                }
+                            </>
+                        } onClick={handleUploadFile} />
+                        <StyledIconButton bg={'brand.400'} hw={{ base: '42px', md: '68px' }} icon={<Icon as={FiSend} boxSize={{ base: '16px', md: '26px' }} />} onClick={handleSendMessage} />
                     </Flex>
                 </Flex>
             </Flex>

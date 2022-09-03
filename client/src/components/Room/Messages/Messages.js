@@ -2,6 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react"
 import { useEffect, useRef } from "react";
 import { FiPaperclip } from "react-icons/fi";
 import { MESSAGE_TYPES } from "../../../constants/constants";
+import MessageComponent from "../../MessageComponent/MessageComponent";
 
 
 const downloadArrayBufferAsFile = (obj, mimType, fileName) => {
@@ -49,35 +50,32 @@ const Messages = ({
 
 
     return (
-        <Flex flexDirection={'column'} overflow={'auto'} flexGrow={1} >
+        <Flex flexDirection={'column'} overflow={'overlay'} flexGrow={1} px={{ base: '20px', md: '24px' }} >
             <Flex flexDirection={'column'} justifyContent={'end'}>
                 {messages && messages.map((message, i) => {
                     return (
-                        <Box key={i} alignSelf={message.sender === 'You' ? 'end' : 'start'} fontFamily={'Inter'} >
+                        <Box key={i} alignSelf={message.sender === 'You' ? 'end' : 'start'} fontFamily={'Inter'} fontSize={{ base: '16px', md: '20px' }} lineHeight={'24px'}>
                             {
                                 message.type === MESSAGE_TYPES.HEADER ? (
-                                    <Text color={'primary.400'} fontWeight={400} fontSize={'17px'} lineHeight={'30px'}>{message.sender === 'You' ? 'You' : "User " + message.sender.substring(0, 5)}</Text>
+                                    <Text color={'primary.400'} fontWeight={400} fontSize={{ base: '14px', md: '17px' }} lineHeight={'30px'}>{message.sender === 'You' ? 'You' : "User " + message.sender.substring(0, 5)}</Text>
                                 ) : message.fileData ? (
                                     // message is a file
-                                    <Flex
+                                    <MessageComponent
                                         cursor={'pointer'}
-                                        mb={'12px'}
-                                        px={'14px'}
-                                        borderRadius={'10px'}
-                                        height={'60px'}
-                                        alignItems={'center'}
+                                        gap={'10px'}
                                         bg={'sub.400'}
                                         color={'secondary.400'}
-                                        gap={'7px'}
+                                        text={message.fileData.fileName}
                                         onClick={() => downloadArrayBufferAsFile(message.fileData.file, message.fileData.fileType, message.fileData.fileName)}>
                                         <FiPaperclip />
-                                        <Text fontWeight={300} fontSize={'20px'} lineHeight={'24px'}>{message.fileData.fileName}</Text>
-                                    </Flex>
+                                    </MessageComponent>
                                 ) : (
                                     // message is a text message
-                                    <Flex mb={'12px'} borderRadius={'10px'} height={'60px'} alignItems={'center'} bg={message.sender === 'You' ? 'brand.400' : 'white'}>
-                                        <Text px={'14px'} color={message.sender === 'You' ? 'white' : 'secondary.400'} fontWeight={300} fontSize={'20px'} lineHeight={'24px'}>{message.msg}</Text>
-                                    </Flex>
+                                    <MessageComponent
+                                        borderRadius={'15px'}
+                                        bg={message.sender === 'You' ? 'brand.400' : 'white'}
+                                        color={message.sender === 'You' ? 'white' : 'secondary.400'}
+                                        text={message.msg} />
                                 )
                             }
                         </Box>
