@@ -1,7 +1,5 @@
+const app = require('./app')
 const http = require('http');
-const express = require('express');
-const cors = require('cors');
-const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
@@ -9,12 +7,6 @@ const io = require('socket.io')(server, {
     },
     maxHttpBufferSize: 1e9
 });
-
-app.use(cors());
-
-app.get('/', (req, res) => {
-    res.send('Welcome to the DocFer server.')
-})
 
 io.on('connection', socket => {
     socket.on("join-room", room => {
