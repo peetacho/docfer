@@ -11,9 +11,7 @@ export function SocketProvider({ children }) {
     const [socket, setSocket] = useState(null)
 
     useEffect(() => {
-        const newSocket = io(
-            'http://localhost:8080'
-        )
+        const newSocket = io(process.env.REACT_APP_DOCFER_SERVER_LINK)
         setSocket(newSocket)
         return () => newSocket.close()
     }, [])
