@@ -1,8 +1,19 @@
-const io = require('socket.io')(8080, {
+const http = require('http');
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const server = http.createServer(app);
+const io = require('socket.io')(server, {
     cors: {
-        origin: ["http://localhost:3000"]
+        origin: "http://localhost:3000"
     },
     maxHttpBufferSize: 1e9
+});
+
+app.use(cors());
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the DocFer server.')
 })
 
 io.on('connection', socket => {
@@ -16,3 +27,5 @@ io.on('connection', socket => {
         }
     })
 })
+
+server.listen(8080, () => console.log(`Server has started.`));
