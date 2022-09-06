@@ -12,9 +12,11 @@ import {
 } from '@chakra-ui/react';
 import {
     FiMenu,
-    FiLogOut,
-    FiHome
+    FiLogOut
 } from 'react-icons/fi';
+import {
+    GiChocolateBar
+} from 'react-icons/gi'
 import { BsGithub } from 'react-icons/bs'
 import { IoCloseOutline } from 'react-icons/io5'
 import BlueIconTextButton from '../../CustomButtons/BlueIconTextButton/BlueIconTextButton';
@@ -22,7 +24,7 @@ import GhostButton from '../../CustomButtons/GhostButton/GhostButton';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 
 const LinkItems = [
-    { name: 'Home', icon: FiHome, link: '/' },
+    { name: 'Creator', icon: GiChocolateBar, link: 'https://github.com/peetacho' },
     { name: 'Github Repo', icon: BsGithub, link: 'https://github.com/peetacho/docfer' }
 ];
 
@@ -96,7 +98,7 @@ const SidebarContent = ({ onClose, roomID, ...rest }) => {
                 w={{ base: 'full', md: '375px' }}>
                 <BlueIconTextButton text={'Leave Room'} icon={FiLogOut} onClick={() => {
                     setLocalRoomCode(null)
-                    window.location = '/enter-room'
+                    window.location = '/'
                 }} />
             </Box>
         </Box>

@@ -62,7 +62,7 @@ const Room = () => {
     }
 
     const handleOnKeyDown = (e) => {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && inputRef.current.value !== '') {
             handleSendMessage()
             inputRef.current.value = ''
         }
