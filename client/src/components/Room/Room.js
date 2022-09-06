@@ -59,6 +59,7 @@ const Room = () => {
             socket.emit("send-message", { msg: inputRef.current.value, room: roomID, fileData: null })
             addMessage(inputRef.current.value, "You", null)
         }
+        inputRef.current.value = ''
     }
 
     const handleOnKeyDown = (e) => {
